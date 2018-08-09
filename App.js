@@ -3,8 +3,7 @@
 import * as React from 'react'
 
 import App from './src'
-import ITEMS from './fixtures/items'
 
-const AppContainer = () => <App items={ITEMS} />
+const AppContainer = () => <App />
 
 export default AppContainer

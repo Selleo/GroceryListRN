@@ -1,4 +1,6 @@
-import React, { Component } from 'react'
+/* @flow */
+
+import * as React from 'react'
 import { Animated, StyleSheet, Text, View } from 'react-native'
 
 import { RectButton } from 'react-native-gesture-handler'
@@ -11,7 +13,7 @@ type Props = {
   removeItem: Function,
 }
 
-export default class SwipeableRow extends Component<Props> {
+export default class SwipeableRow extends React.Component<Props> {
   _renderLeftActions = (progress, dragX) => {
     const trans = dragX.interpolate({
       inputRange: [0, 50, 100, 101],
