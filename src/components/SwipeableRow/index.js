@@ -19,8 +19,8 @@ type Props = {
 }
 
 export default class SwipeableRow extends React.Component<Props> {
-  _swipeableRow: React.ComponentType<Props>
-  close = () => {}
+  _swipeableRow: React.ElementRef<typeof SwipeableRow>
+  close = (): void => this._swipeableRow.close()
 
   // $FlowFixMe
   updateRef = (ref): React.ElementRef<SwipeableRow> => (this._swipeableRow = ref)
@@ -52,12 +52,17 @@ export default class SwipeableRow extends React.Component<Props> {
     setTimeout(this.props.removeItem, 300)
   }
 
+  _handleEdit = () => {
+    this.close()
+    this.props.editItem()
+  }
+
   _renderRightActions = progress => (
     <View style={styles.rightActionButtons}>
       <RightButton
         backgroundColor={orange}
         iconName="edit"
-        onPress={this.props.editItem}
+        onPress={this._handleEdit}
         positionX={ITEM_WIDTH * 2}
         progress={progress}
       />

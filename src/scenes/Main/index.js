@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { StyleSheet, View, Text } from 'react-native'
-import { FlatList, RectButton } from 'react-native-gesture-handler'
+import { FlatList, RectButton, TextInput } from 'react-native-gesture-handler'
 
 import SwipeableRow from '../../components/SwipeableRow'
 import { gray, white, transparent } from '../../styles/colors'
@@ -13,12 +13,24 @@ type Props = {}
 type State = {
   items: Array<Object>,
   editedItemId: ?string,
+  name: ?string,
 }
 
 export default class App extends Component<Props, State> {
   state = {
     items: ITEMS,
     editedItemId: null,
+    name: null,
+  }
+
+  _handleChange = (name): void => this.setState({ name })
+  _handleEdit = () => {
+    const { editedItemId, name } = this.state
+
+    this.setState(prevState => ({
+      items: prevState.items.map(item => (item.id === editedItemId ? { id: item.id, name } : item)),
+      editedItemId: null,
+    }))
   }
 
   _editItem = (editedItemId): void => this.setState({ editedItemId })
@@ -30,9 +42,19 @@ export default class App extends Component<Props, State> {
   _renderItem = ({ item: { id, name } }) => (
     <SwipeableRow editItem={() => this._editItem(id)} removeItem={() => this._removeItem(id)}>
       <RectButton style={styles.rectButton}>
-        <Text numberOfLines={2} style={styles.text}>
-          {name}
-        </Text>
+        {id === this.state.editedItemId ? (
+          <TextInput
+            autoFocus={true}
+            onBlur={this._handleEdit}
+            onChangeText={this._handleChange}
+            onSubmitEditing={this._handleEdit}
+            value={name}
+          />
+        ) : (
+          <Text numberOfLines={2} style={styles.text}>
+            {name}
+          </Text>
+        )}
       </RectButton>
     </SwipeableRow>
   )
