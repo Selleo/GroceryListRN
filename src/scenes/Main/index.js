@@ -5,30 +5,33 @@ import { StyleSheet, View, Text } from 'react-native'
 import { FlatList, RectButton } from 'react-native-gesture-handler'
 
 import SwipeableRow from '../../components/SwipeableRow'
-import { gray, white, transparent } from '../../styles/variables'
+import { gray, white, transparent } from '../../styles/colors'
 
 import ITEMS from '../../../fixtures/items'
 
 type Props = {}
 type State = {
   items: Array<Object>,
+  editedItemId: ?string,
 }
 
 export default class App extends Component<Props, State> {
   state = {
     items: ITEMS,
+    editedItemId: null,
   }
 
+  _editItem = (editedItemId): void => this.setState({ editedItemId })
   _removeItem = (id): void =>
     this.setState(prevState => ({
       items: prevState.items.filter(item => item.id !== id),
     }))
 
-  _renderItem = ({ item }) => (
-    <SwipeableRow removeItem={() => this._removeItem(item.id)}>
+  _renderItem = ({ item: { id, name } }) => (
+    <SwipeableRow editItem={() => this._editItem(id)} removeItem={() => this._removeItem(id)}>
       <RectButton style={styles.rectButton}>
         <Text numberOfLines={2} style={styles.text}>
-          {item.name}
+          {name}
         </Text>
       </RectButton>
     </SwipeableRow>

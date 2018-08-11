@@ -1,20 +1,31 @@
 /* @flow */
 
 import * as React from 'react'
-import { Animated, StyleSheet, Text, View } from 'react-native'
+import { Animated, StyleSheet, View } from 'react-native'
 
 import { RectButton } from 'react-native-gesture-handler'
-
 import Swipeable from 'react-native-gesture-handler/Swipeable'
-import { transparent, lightGreen, white } from '../../styles/variables'
+import Icon from 'react-native-vector-icons/FontAwesome'
+
+import { RightButton } from './RightButton'
+import { transparent, lightGreen, white, red, orange } from '../../styles/colors'
+
+const ITEM_WIDTH = 64
 
 type Props = {
-  children: any,
+  children: React.Node,
+  editItem: Function,
   removeItem: Function,
 }
 
 export default class SwipeableRow extends React.Component<Props> {
-  _renderLeftActions = (progress, dragX) => {
+  _swipeableRow: React.ComponentType<Props>
+  close = () => {}
+
+  // $FlowFixMe
+  updateRef = (ref): React.ElementRef<SwipeableRow> => (this._swipeableRow = ref)
+
+  _renderLeftActions = (progress, dragX): React.Node => {
     const trans = dragX.interpolate({
       inputRange: [0, 50, 100, 101],
       outputRange: [-20, 0, 0, 1],
@@ -30,45 +41,37 @@ export default class SwipeableRow extends React.Component<Props> {
             },
           ]}
         >
-          Done
+          <Icon color={white} name="check" size={24} />
         </Animated.Text>
       </RectButton>
     )
   }
 
-  _renderRightAction = (text, color, x, progress) => {
-    const trans = progress.interpolate({
-      inputRange: [0, 1],
-      outputRange: [x, 0],
-    })
-
-    const pressHandler = () => {
-      this.close()
-      alert(text)
-    }
-
-    return (
-      <Animated.View style={[styles.container, { transform: [{ translateX: trans }] }]}>
-        <RectButton onPress={pressHandler} style={[styles.rightAction, { backgroundColor: color }]}>
-          <Text style={styles.actionText}>{text}</Text>
-        </RectButton>
-      </Animated.View>
-    )
+  _handleRemoveItem = () => {
+    this.close()
+    setTimeout(this.props.removeItem, 300)
   }
 
   _renderRightActions = progress => (
     <View style={styles.rightActionButtons}>
-      {this._renderRightAction('More', '#C8C7CD', 192, progress)}
-      {this._renderRightAction('Flag', '#ffab00', 128, progress)}
-      {this._renderRightAction('More', '#dd2c00', 64, progress)}
+      <RightButton
+        backgroundColor={orange}
+        iconName="edit"
+        onPress={this.props.editItem}
+        positionX={ITEM_WIDTH * 2}
+        progress={progress}
+      />
+      <RightButton
+        backgroundColor={red}
+        iconName="trash"
+        onPress={this._handleRemoveItem}
+        positionX={ITEM_WIDTH}
+        progress={progress}
+      />
     </View>
   )
 
-  _updateRef = ref => (this._swipeableRow = ref)
-
-  close = () => this._swipeableRow.close()
-
-  render() {
+  render(): React.Node {
     const { children, removeItem } = this.props
 
     return (
@@ -76,7 +79,7 @@ export default class SwipeableRow extends React.Component<Props> {
         friction={2}
         leftThreshold={30}
         onSwipeableLeftOpen={removeItem}
-        ref={this._updateRef}
+        ref={this.updateRef}
         renderLeftActions={this._renderLeftActions}
         renderRightActions={this._renderRightActions}
         rightThreshold={40}
@@ -87,10 +90,7 @@ export default class SwipeableRow extends React.Component<Props> {
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
+const styles: Object = StyleSheet.create({
   leftAction: {
     flex: 1,
     backgroundColor: lightGreen,
@@ -102,13 +102,8 @@ const styles = StyleSheet.create({
     backgroundColor: transparent,
     padding: 10,
   },
-  rightAction: {
-    alignItems: 'center',
-    flex: 1,
-    justifyContent: 'center',
-  },
   rightActionButtons: {
-    width: 192,
+    width: ITEM_WIDTH * 2,
     flexDirection: 'row',
   },
 })
