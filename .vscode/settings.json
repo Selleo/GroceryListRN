@@ -4,5 +4,8 @@
   "editor.formatOnSave": true,
   "eslint.autoFixOnSave": true,
   "prettier.eslintIntegration": true,
-  "flow.pathToFlow": "${workspaceRoot}/node_modules/.bin/flow"
+  "flow.pathToFlow": "${workspaceRoot}/node_modules/.bin/flow",
+  "cSpell.words": [
+    "animatable"
+  ]
 }

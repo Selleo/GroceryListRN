@@ -1,15 +1,19 @@
 /* @flow */
 
 import React, { Component } from 'react'
-import { StyleSheet, View, Text } from 'react-native'
-import { FlatList, RectButton, TextInput } from 'react-native-gesture-handler'
-
-import SwipeableRow from '../../components/SwipeableRow'
-import { gray, white, transparent } from '../../styles/colors'
+import { StyleSheet } from 'react-native'
+import { FlatList } from 'react-native-gesture-handler'
+import Icon from 'react-native-vector-icons/FontAwesome'
+import DraggableFlatList from 'react-native-draggable-flatlist'
 
 import ITEMS from '../../../fixtures/items'
+import { gray } from '../../styles/colors'
+import SortableListItem from '../../components/SortableListItem'
+import ListItem from '../../components/ListItem'
 
-type Props = {}
+type Props = {
+  navigation: Object,
+}
 type State = {
   items: Array<Object>,
   editedItemId: ?string,
@@ -17,6 +21,21 @@ type State = {
 }
 
 export default class App extends Component<Props, State> {
+  // $FlowFixMe
+  static navigationOptions = ({ navigation: { setParams, getParam } }) => {
+    return {
+      headerRight: (
+        <Icon
+          color={gray}
+          name="sort"
+          onPress={() => setParams({ sortable: !getParam('sortable') })}
+          size={30}
+          style={styles.icon}
+        />
+      ),
+    }
+  }
+
   state = {
     items: ITEMS,
     editedItemId: null,
@@ -39,54 +58,43 @@ export default class App extends Component<Props, State> {
       items: prevState.items.filter(item => item.id !== id),
     }))
 
-  _renderItem = ({ item: { id, name } }) => (
-    <SwipeableRow editItem={() => this._editItem(id)} removeItem={() => this._removeItem(id)}>
-      <RectButton style={styles.rectButton}>
-        {id === this.state.editedItemId ? (
-          <TextInput
-            autoFocus={true}
-            onBlur={this._handleEdit}
-            onChangeText={this._handleChange}
-            onSubmitEditing={this._handleEdit}
-            value={name}
-          />
-        ) : (
-          <Text numberOfLines={2} style={styles.text}>
-            {name}
-          </Text>
-        )}
-      </RectButton>
-    </SwipeableRow>
-  )
-
   render() {
-    return (
+    const { getParam } = this.props.navigation
+    const sortable = getParam('sortable')
+
+    return sortable ? (
+      <DraggableFlatList
+        data={this.state.items}
+        keyExtractor={({ id }) => id}
+        onMoveEnd={({ data }) => this.setState({ items: data })}
+        renderItem={props => <SortableListItem {...props} />}
+        style={styles.container}
+      />
+    ) : (
       <FlatList
         data={this.state.items}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
         keyExtractor={({ id }) => id}
-        renderItem={this._renderItem}
+        renderItem={({ item }) => (
+          <ListItem
+            editedItemId={this.state.editedItemId}
+            editItem={() => this._editItem(item.id)}
+            handleChange={this._handleChange}
+            handleEdit={this._handleEdit}
+            item={item}
+            removeItem={() => this._removeItem(item.id)}
+          />
+        )}
+        style={styles.container}
       />
     )
   }
 }
 
 const styles = StyleSheet.create({
-  separator: {
-    backgroundColor: gray,
-    height: StyleSheet.hairlineWidth,
-  },
-  rectButton: {
+  container: {
     flex: 1,
-    height: 80,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    justifyContent: 'space-between',
-    flexDirection: 'column',
-    backgroundColor: white,
   },
-  text: {
-    fontWeight: 'bold',
-    backgroundColor: transparent,
+  icon: {
+    padding: 10,
   },
 })
