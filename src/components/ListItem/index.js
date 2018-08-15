@@ -1,6 +1,7 @@
 import * as React from 'react'
-import { Text, StyleSheet } from 'react-native'
-import { RectButton, TextInput } from 'react-native-gesture-handler'
+import { StyleSheet } from 'react-native'
+import { RectButton } from 'react-native-gesture-handler'
+import { Text, TextInput } from 'react-native-paper'
 
 import SwipeableRow from '../SwipeableRow'
 import { white, transparent } from '../../styles/colors'

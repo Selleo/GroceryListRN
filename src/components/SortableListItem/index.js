@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
-import { Animated, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { Animated, TouchableOpacity, StyleSheet } from 'react-native'
+import { Text } from 'react-native-paper'
 
 import { gray, white, transparent } from '../../styles/colors'
 
