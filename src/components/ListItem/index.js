@@ -14,7 +14,7 @@ type Props = {
   removeItem: Function,
 }
 
-const SortableListItem = (props: Props) => {
+const ListItem = (props: Props) => {
   const {
     editItem,
     editedItemId,
@@ -45,7 +45,7 @@ const SortableListItem = (props: Props) => {
   )
 }
 
-export default SortableListItem
+export default ListItem
 
 const styles = StyleSheet.create({
   button: {

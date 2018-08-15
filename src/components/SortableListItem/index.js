@@ -1,6 +1,5 @@
-import React, { Component } from 'react'
-import { Animated } from 'react-native'
-import { Text, TouchableOpacity, StyleSheet } from 'react-native'
+import React, { PureComponent } from 'react'
+import { Animated, Text, TouchableOpacity, StyleSheet } from 'react-native'
 
 import { gray, white, transparent } from '../../styles/colors'
 
@@ -11,12 +10,24 @@ type Props = {
   item: object,
 }
 
-class SortableListItem extends Component<Props> {
+export class SortableListItem extends PureComponent<Props> {
   state = {
-    animation: Animated.Value(0),
+    animation: new Animated.Value(0),
   }
 
-  componentDidMount = () => {}
+  componentDidMount = () => {
+    this.loopAnimation()
+  }
+
+  loopAnimation = () => {
+    this.animation = Animated.loop(
+      Animated.timing(this.state.animation, {
+        duration: 200,
+        isInteraction: false,
+        toValue: 1,
+      }),
+    ).start()
+  }
 
   render() {
     const {
@@ -25,9 +36,13 @@ class SortableListItem extends Component<Props> {
       isActive,
       item: { name },
     } = this.props
+    const animationValue = this.state.animation.interpolate({
+      inputRange: [0, 0.25, 0.5, 0.75, 1],
+      outputRange: ['0deg', '1deg', '0deg', '-1deg', '0deg'],
+    })
 
     return (
-      <Animated.View>
+      <Animated.View style={{ transform: [{ rotateZ: animationValue }] }}>
         <TouchableOpacity
           onLongPress={move}
           onPressOut={moveEnd}

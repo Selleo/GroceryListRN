@@ -52,6 +52,7 @@ export default class App extends Component<Props, State> {
     }))
   }
 
+  _renderSortableItem = props => <SortableListItem {...props} />
   _editItem = (editedItemId): void => this.setState({ editedItemId })
   _removeItem = (id): void =>
     this.setState(prevState => ({
@@ -67,7 +68,7 @@ export default class App extends Component<Props, State> {
         data={this.state.items}
         keyExtractor={({ id }) => id}
         onMoveEnd={({ data }) => this.setState({ items: data })}
-        renderItem={props => <SortableListItem {...props} />}
+        renderItem={this._renderSortableItem}
         style={styles.container}
       />
     ) : (
