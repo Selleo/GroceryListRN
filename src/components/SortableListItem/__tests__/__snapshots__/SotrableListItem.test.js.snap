@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SortableListItem /> render 1`] = `
+<RCTView
+  style={
+    Object {
+      "transform": Array [
+        Object {
+          "rotateZ": undefined,
+        },
+      ],
+    }
+  }
+>
+  <RCTView
+    accessible={true}
+    isTVSelectable={true}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Array [
+        Array [
+          Object {
+            "flex": 1,
+            "flexDirection": "column",
+            "height": 50,
+            "justifyContent": "space-between",
+            "margin": 5,
+            "paddingHorizontal": 20,
+            "paddingVertical": 10,
+          },
+          Object {
+            "backgroundColor": "#FFFFFF",
+          },
+        ],
+        Object {
+          "opacity": Object {
+            "__makeNative": [MockFunction],
+            "addListener": [MockFunction],
+            "interpolate": [MockFunction],
+          },
+        },
+      ]
+    }
+  >
+    <Text
+      numberOfLines={2}
+      style={
+        Array [
+          Object {
+            "color": "#000000",
+            "fontFamily": "Helvetica Neue",
+          },
+          Object {
+            "backgroundColor": "transparent",
+            "fontWeight": "bold",
+          },
+        ]
+      }
+      theme={
+        Object {
+          "colors": Object {
+            "accent": "#03dac4",
+            "background": "#f6f6f6",
+            "disabled": "rgba(0, 0, 0, 0.26)",
+            "error": "#B00020",
+            "placeholder": "rgba(0, 0, 0, 0.38)",
+            "primary": "#6200ee",
+            "surface": "#ffffff",
+            "text": "#000000",
+          },
+          "dark": false,
+          "fonts": Object {
+            "light": "HelveticaNeue-Light",
+            "medium": "HelveticaNeue-Medium",
+            "regular": "Helvetica Neue",
+            "thin": "HelveticaNeue-Thin",
+          },
+          "roundness": 4,
+        }
+      }
+    >
+      ItemName
+    </Text>
+  </RCTView>
+</RCTView>
+`;
