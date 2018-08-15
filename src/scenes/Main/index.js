@@ -1,7 +1,7 @@
 /* @flow */
 
 import React, { Component } from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { FlatList } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import DraggableFlatList from 'react-native-draggable-flatlist'
@@ -74,6 +74,7 @@ export default class App extends Component<Props, State> {
     ) : (
       <FlatList
         data={this.state.items}
+        ItemSeparatorComponent={() => <View style={styles.separator} />}
         keyExtractor={({ id }) => id}
         renderItem={({ item }) => (
           <ListItem
@@ -97,5 +98,9 @@ const styles = StyleSheet.create({
   },
   icon: {
     padding: 10,
+  },
+  separator: {
+    backgroundColor: gray,
+    height: StyleSheet.hairlineWidth,
   },
 })
