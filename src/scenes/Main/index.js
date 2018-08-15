@@ -2,12 +2,13 @@
 
 import React, { Component } from 'react'
 import DraggableFlatList from 'react-native-draggable-flatlist'
+import uniqueId from 'lodash/uniqueId'
 import { FlatList } from 'react-native-gesture-handler'
 import { Share, StyleSheet, View } from 'react-native'
-import { FAB } from 'react-native-paper'
+import { Button, FAB, Text, Dialog, TextInput } from 'react-native-paper'
 
 import ITEMS from '../../../fixtures/items'
-import { gray } from '../../styles/colors'
+import { gray, white } from '../../styles/colors'
 import SortableListItem from '../../components/SortableListItem'
 import ListItem from '../../components/ListItem'
 
@@ -20,6 +21,7 @@ type State = {
   items: Array<Object>,
   modalOpened: boolean,
   name: ?string,
+  newItem: ?string,
 }
 
 export default class App extends Component<Props, State> {
@@ -29,12 +31,19 @@ export default class App extends Component<Props, State> {
     items: ITEMS,
     modalOpened: false,
     name: null,
+    newItem: null,
   }
 
-  _editItem = (editedItemId: string): void => this.setState({ editedItemId })
-  _handleChange = (name: string): void => this.setState({ name })
-  _openDialog = (): void => this.setState({ modalOpened: true })
   _renderSortableItem = props => <SortableListItem {...props} />
+  _handleStateChange = (key: string): Function => (name: string): void =>
+    this.setState({ [key]: name })
+
+  _addNewProduct = (): void => {
+    const { items, newItem } = this.state
+    const item = { name: newItem, id: uniqueId('item') }
+    this.setState({ items: [...items, item], modalOpened: false })
+  }
+
   _handleEdit = () => {
     const { editedItemId, name } = this.state
 
@@ -52,7 +61,7 @@ export default class App extends Component<Props, State> {
     }))
 
   render() {
-    const { items, fabOpened, editedItemId } = this.state
+    const { items, fabOpened, editedItemId, modalOpened } = this.state
     const { getParam } = this.props.navigation
     const sortable: boolean = getParam('sortable')
 
@@ -74,8 +83,8 @@ export default class App extends Component<Props, State> {
             renderItem={({ item }) => (
               <ListItem
                 editedItemId={editedItemId}
-                editItem={() => this._editItem(item.id)}
-                handleChange={this._handleChange}
+                editItem={() => this._handleStateChange('editedItemId')(item.id)}
+                handleChange={this._handleStateChange('name')}
                 handleEdit={this._handleEdit}
                 item={item}
                 removeItem={() => this._removeItem(item.id)}
@@ -91,12 +100,34 @@ export default class App extends Component<Props, State> {
               label: 'Share',
               onPress: () => Share.share(shareContent, shareOptions),
             },
-            { icon: 'add', label: 'Add new product', onPress: this._openDialog },
+            {
+              icon: 'add',
+              label: 'Add new product',
+              onPress: () => this._handleStateChange('modalOpened')(true),
+            },
           ]}
           icon={fabOpened ? 'today' : 'more'}
-          onStateChange={({ open }) => this.setState({ fabOpened: open })}
+          onStateChange={({ open }) => this._handleStateChange('fabOpened')(open)}
           open={fabOpened}
         />
+        <Dialog
+          onDismiss={() => this._handleStateChange('modalOpened')(false)}
+          visible={modalOpened}
+        >
+          <Dialog.Title>Add new product</Dialog.Title>
+          <Dialog.Content>
+            <TextInput
+              onChangeText={this._handleStateChange('newItem')}
+              onSubmitEditing={this._addNewProduct}
+            />
+          </Dialog.Content>
+
+          <Dialog.Actions>
+            <Button mode="contained" onPress={this._addNewProduct}>
+              <Text style={styles.text}>Create</Text>
+            </Button>
+          </Dialog.Actions>
+        </Dialog>
       </View>
     )
   }
@@ -120,5 +151,8 @@ const styles = StyleSheet.create({
   separator: {
     backgroundColor: gray,
     height: StyleSheet.hairlineWidth,
+  },
+  text: {
+    color: white,
   },
 })
