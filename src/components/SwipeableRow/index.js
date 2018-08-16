@@ -1,13 +1,13 @@
 /* @flow */
+import type { Animation } from '../../types'
 
 import * as React from 'react'
-import { Animated, StyleSheet, View } from 'react-native'
-
-import { RectButton } from 'react-native-gesture-handler'
-import Swipeable from 'react-native-gesture-handler/Swipeable'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import Swipeable from 'react-native-gesture-handler/Swipeable'
+import { Animated, StyleSheet, View } from 'react-native'
+import { RectButton } from 'react-native-gesture-handler'
 
-import { RightButton } from './RightButton'
+import RightButton from './RightButton'
 import { transparent, lightGreen, white, red, orange } from '../../styles/colors'
 
 const ITEM_WIDTH = 64
@@ -23,10 +23,10 @@ export default class SwipeableRow extends React.Component<Props> {
   close = (): void => this._swipeableRow.close()
 
   // $FlowFixMe
-  updateRef = (ref): React.ElementRef<SwipeableRow> => (this._swipeableRow = ref)
+  updateRef = (ref): React.ElementRef<typeof SwipeableRow> => (this._swipeableRow = ref)
 
-  _renderLeftActions = (progress, dragX): React.Node => {
-    const trans = dragX.interpolate({
+  _renderLeftActions = (progress: Animation, dragX: Animation): React.Node => {
+    const translateX: Animation = dragX.interpolate({
       inputRange: [0, 50, 100, 101],
       outputRange: [-20, 0, 0, 1],
     })
@@ -37,7 +37,7 @@ export default class SwipeableRow extends React.Component<Props> {
           style={[
             styles.actionText,
             {
-              transform: [{ translateX: trans }],
+              transform: [{ translateX }],
             },
           ]}
         >

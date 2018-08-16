@@ -6,7 +6,36 @@ exports[`<SortableListItem /> render 1`] = `
     Object {
       "transform": Array [
         Object {
-          "rotateZ": undefined,
+          "rotateZ": Object {
+            "interpolate": [MockFunction] {
+              "calls": Array [
+                Array [
+                  Object {
+                    "inputRange": Array [
+                      0,
+                      0.25,
+                      0.5,
+                      0.75,
+                      1,
+                    ],
+                    "outputRange": Array [
+                      "0deg",
+                      "1deg",
+                      "0deg",
+                      "-1deg",
+                      "0deg",
+                    ],
+                  },
+                ],
+              ],
+              "results": Array [
+                Object {
+                  "isThrow": false,
+                  "value": [Circular],
+                },
+              ],
+            },
+          },
         },
       ],
     }
@@ -41,7 +70,405 @@ exports[`<SortableListItem /> render 1`] = `
           "opacity": Object {
             "__makeNative": [MockFunction],
             "addListener": [MockFunction],
-            "interpolate": [MockFunction],
+            "interpolate": [MockFunction] {
+              "calls": Array [
+                Array [
+                  Object {
+                    "inputRange": Array [
+                      0,
+                      0.25,
+                      0.5,
+                      0.75,
+                      1,
+                    ],
+                    "outputRange": Array [
+                      "0deg",
+                      "1deg",
+                      "0deg",
+                      "-1deg",
+                      "0deg",
+                    ],
+                  },
+                ],
+              ],
+              "results": Array [
+                Object {
+                  "isThrow": false,
+                  "value": Object {
+                    "interpolate": [MockFunction] {
+                      "calls": Array [
+                        Array [
+                          Object {
+                            "inputRange": Array [
+                              0,
+                              0.25,
+                              0.5,
+                              0.75,
+                              1,
+                            ],
+                            "outputRange": Array [
+                              "0deg",
+                              "1deg",
+                              "0deg",
+                              "-1deg",
+                              "0deg",
+                            ],
+                          },
+                        ],
+                      ],
+                      "results": [Circular],
+                    },
+                  },
+                },
+              ],
+            },
+            "removeAllListeners": [MockFunction],
+            "removeListener": [MockFunction],
+            "start": [MockFunction] {
+              "calls": Array [
+                Array [],
+              ],
+              "results": Array [
+                Object {
+                  "isThrow": false,
+                  "value": undefined,
+                },
+              ],
+            },
+          },
+        },
+      ]
+    }
+  >
+    <Text
+      numberOfLines={2}
+      style={
+        Array [
+          Object {
+            "color": "#000000",
+            "fontFamily": "Helvetica Neue",
+          },
+          Object {
+            "backgroundColor": "transparent",
+            "fontWeight": "bold",
+          },
+        ]
+      }
+      theme={
+        Object {
+          "colors": Object {
+            "accent": "#03dac4",
+            "background": "#f6f6f6",
+            "disabled": "rgba(0, 0, 0, 0.26)",
+            "error": "#B00020",
+            "placeholder": "rgba(0, 0, 0, 0.38)",
+            "primary": "#6200ee",
+            "surface": "#ffffff",
+            "text": "#000000",
+          },
+          "dark": false,
+          "fonts": Object {
+            "light": "HelveticaNeue-Light",
+            "medium": "HelveticaNeue-Medium",
+            "regular": "Helvetica Neue",
+            "thin": "HelveticaNeue-Thin",
+          },
+          "roundness": 4,
+        }
+      }
+    >
+      ItemName
+    </Text>
+  </RCTView>
+</RCTView>
+`;
+
+exports[`<SortableListItem /> render inActive item 1`] = `
+<RCTView
+  style={
+    Object {
+      "transform": Array [
+        Object {
+          "rotateZ": Object {
+            "interpolate": [MockFunction] {
+              "calls": Array [
+                Array [
+                  Object {
+                    "inputRange": Array [
+                      0,
+                      0.25,
+                      0.5,
+                      0.75,
+                      1,
+                    ],
+                    "outputRange": Array [
+                      "0deg",
+                      "1deg",
+                      "0deg",
+                      "-1deg",
+                      "0deg",
+                    ],
+                  },
+                ],
+                Array [
+                  Object {
+                    "inputRange": Array [
+                      0,
+                      0.25,
+                      0.5,
+                      0.75,
+                      1,
+                    ],
+                    "outputRange": Array [
+                      "0deg",
+                      "1deg",
+                      "0deg",
+                      "-1deg",
+                      "0deg",
+                    ],
+                  },
+                ],
+              ],
+              "results": Array [
+                Object {
+                  "isThrow": false,
+                  "value": Object {
+                    "interpolate": [MockFunction] {
+                      "calls": Array [
+                        Array [
+                          Object {
+                            "inputRange": Array [
+                              0,
+                              0.25,
+                              0.5,
+                              0.75,
+                              1,
+                            ],
+                            "outputRange": Array [
+                              "0deg",
+                              "1deg",
+                              "0deg",
+                              "-1deg",
+                              "0deg",
+                            ],
+                          },
+                        ],
+                        Array [
+                          Object {
+                            "inputRange": Array [
+                              0,
+                              0.25,
+                              0.5,
+                              0.75,
+                              1,
+                            ],
+                            "outputRange": Array [
+                              "0deg",
+                              "1deg",
+                              "0deg",
+                              "-1deg",
+                              "0deg",
+                            ],
+                          },
+                        ],
+                      ],
+                      "results": [Circular],
+                    },
+                  },
+                },
+                Object {
+                  "isThrow": false,
+                  "value": [Circular],
+                },
+              ],
+            },
+          },
+        },
+      ],
+    }
+  }
+>
+  <RCTView
+    accessible={true}
+    isTVSelectable={true}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Array [
+        Array [
+          Object {
+            "flex": 1,
+            "flexDirection": "column",
+            "height": 50,
+            "justifyContent": "space-between",
+            "margin": 5,
+            "paddingHorizontal": 20,
+            "paddingVertical": 10,
+          },
+          Object {
+            "backgroundColor": "#AEAEAE",
+          },
+        ],
+        Object {
+          "opacity": Object {
+            "__makeNative": [MockFunction],
+            "addListener": [MockFunction],
+            "interpolate": [MockFunction] {
+              "calls": Array [
+                Array [
+                  Object {
+                    "inputRange": Array [
+                      0,
+                      0.25,
+                      0.5,
+                      0.75,
+                      1,
+                    ],
+                    "outputRange": Array [
+                      "0deg",
+                      "1deg",
+                      "0deg",
+                      "-1deg",
+                      "0deg",
+                    ],
+                  },
+                ],
+                Array [
+                  Object {
+                    "inputRange": Array [
+                      0,
+                      0.25,
+                      0.5,
+                      0.75,
+                      1,
+                    ],
+                    "outputRange": Array [
+                      "0deg",
+                      "1deg",
+                      "0deg",
+                      "-1deg",
+                      "0deg",
+                    ],
+                  },
+                ],
+              ],
+              "results": Array [
+                Object {
+                  "isThrow": false,
+                  "value": Object {
+                    "interpolate": [MockFunction] {
+                      "calls": Array [
+                        Array [
+                          Object {
+                            "inputRange": Array [
+                              0,
+                              0.25,
+                              0.5,
+                              0.75,
+                              1,
+                            ],
+                            "outputRange": Array [
+                              "0deg",
+                              "1deg",
+                              "0deg",
+                              "-1deg",
+                              "0deg",
+                            ],
+                          },
+                        ],
+                        Array [
+                          Object {
+                            "inputRange": Array [
+                              0,
+                              0.25,
+                              0.5,
+                              0.75,
+                              1,
+                            ],
+                            "outputRange": Array [
+                              "0deg",
+                              "1deg",
+                              "0deg",
+                              "-1deg",
+                              "0deg",
+                            ],
+                          },
+                        ],
+                      ],
+                      "results": [Circular],
+                    },
+                  },
+                },
+                Object {
+                  "isThrow": false,
+                  "value": Object {
+                    "interpolate": [MockFunction] {
+                      "calls": Array [
+                        Array [
+                          Object {
+                            "inputRange": Array [
+                              0,
+                              0.25,
+                              0.5,
+                              0.75,
+                              1,
+                            ],
+                            "outputRange": Array [
+                              "0deg",
+                              "1deg",
+                              "0deg",
+                              "-1deg",
+                              "0deg",
+                            ],
+                          },
+                        ],
+                        Array [
+                          Object {
+                            "inputRange": Array [
+                              0,
+                              0.25,
+                              0.5,
+                              0.75,
+                              1,
+                            ],
+                            "outputRange": Array [
+                              "0deg",
+                              "1deg",
+                              "0deg",
+                              "-1deg",
+                              "0deg",
+                            ],
+                          },
+                        ],
+                      ],
+                      "results": [Circular],
+                    },
+                  },
+                },
+              ],
+            },
+            "removeAllListeners": [MockFunction],
+            "removeListener": [MockFunction],
+            "start": [MockFunction] {
+              "calls": Array [
+                Array [],
+                Array [],
+              ],
+              "results": Array [
+                Object {
+                  "isThrow": false,
+                  "value": undefined,
+                },
+                Object {
+                  "isThrow": false,
+                  "value": undefined,
+                },
+              ],
+            },
           },
         },
       ]

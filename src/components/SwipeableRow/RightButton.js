@@ -10,10 +10,10 @@ type Props = {
   iconName: string,
   onPress: Function,
   positionX: number,
-  progress: object,
+  progress: object<{ interpolate: Function }>,
 }
 
-export class RightButton extends React.PureComponent<Props> {
+export default class RightButton extends React.PureComponent<Props> {
   render() {
     const { progress, positionX, iconName, onPress, backgroundColor } = this.props
 

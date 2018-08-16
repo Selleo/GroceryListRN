@@ -13,9 +13,15 @@ describe('<SortableListItem />', () => {
     item: { name: 'ItemName' },
   }
 
-  const wrapper = renderer.create(<SortableListItem {...defaultProps} />)
-
   test('render', () => {
+    const wrapper = renderer.create(<SortableListItem {...defaultProps} />)
+
+    expect(wrapper).toMatchSnapshot()
+  })
+
+  test('render inActive item', () => {
+    const wrapper = renderer.create(<SortableListItem {...defaultProps} isActive={true} />)
+
     expect(wrapper).toMatchSnapshot()
   })
 })

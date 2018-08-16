@@ -14,9 +14,19 @@ describe('<ListItem />', () => {
     item: { id: '2', name: 'ItemName' },
   }
 
-  const wrapper = renderer.create(<ListItem {...defaultProps} />)
-
   test('render', () => {
+    const wrapper = renderer.create(<ListItem {...defaultProps} />)
+
+    expect(wrapper).toMatchSnapshot()
+  })
+
+  test.skip('render Text Input', () => {
+    // TODO: Check how to mock renders inside `react-native-paper`
+
+    const wrapper = renderer.create(
+      <ListItem {...defaultProps} item={{ id: '1', name: 'toEdit' }} />,
+    )
+
     expect(wrapper).toMatchSnapshot()
   })
 })

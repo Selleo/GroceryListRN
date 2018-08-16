@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RightButton /> render 1`] = `
+<RCTView
+  style={
+    Array [
+      Object {
+        "flex": 1,
+      },
+      Object {
+        "transform": Array [
+          Object {
+            "translateX": undefined,
+          },
+        ],
+      },
+    ]
+  }
+>
+  <RNGestureHandlerButton
+    activeOpacity={0.105}
+    collapsable={false}
+    onActiveStateChange={[Function]}
+    onGestureEvent={[Function]}
+    onGestureHandlerEvent={[Function]}
+    onGestureHandlerStateChange={[Function]}
+    onHandlerStateChange={[Function]}
+    onPress={[MockFunction]}
+    style={
+      Array [
+        Object {
+          "overflow": "hidden",
+        },
+        Array [
+          Object {
+            "alignItems": "center",
+            "flex": 1,
+            "justifyContent": "center",
+          },
+          Object {
+            "backgroundColor": "#000",
+          },
+        ],
+      ]
+    }
+    underlayColor="black"
+  >
+    <RCTView
+      style={
+        Array [
+          Object {
+            "bottom": 0,
+            "left": 0,
+            "position": "absolute",
+            "right": 0,
+            "top": 0,
+          },
+          Object {
+            "opacity": Object {
+              "__makeNative": [MockFunction],
+              "addListener": [MockFunction],
+              "interpolate": [MockFunction],
+              "removeAllListeners": [MockFunction],
+              "removeListener": [MockFunction],
+              "start": [MockFunction],
+            },
+          },
+          Object {
+            "backgroundColor": "black",
+          },
+        ]
+      }
+    />
+    <Text
+      allowFontScaling={false}
+      style={
+        Array [
+          Object {
+            "color": "#FFFFFF",
+            "fontSize": 24,
+          },
+          undefined,
+          Object {
+            "fontFamily": "FontAwesome",
+            "fontStyle": "normal",
+            "fontWeight": "normal",
+          },
+          Object {},
+        ]
+      }
+    >
+      
+    </Text>
+  </RNGestureHandlerButton>
+</RCTView>
+`;
