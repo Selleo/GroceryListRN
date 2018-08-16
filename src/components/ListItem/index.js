@@ -30,11 +30,14 @@ const ListItem = (props: Props) => {
       <RectButton style={styles.button}>
         {id === editedItemId ? (
           <TextInput
+            autoCorrect={true}
             autoFocus={true}
+            defaultValue={name}
             onBlur={handleEdit}
             onChangeText={handleChange}
             onSubmitEditing={handleEdit}
-            value={name}
+            returnKeyLabel="Save"
+            returnKeyType="done"
           />
         ) : (
           <Text numberOfLines={2} style={styles.text}>

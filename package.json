@@ -3,11 +3,13 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "flow": "flow",
+    "generate-apk": "cd android && ./gradlew assembleRelease",
+    "remove-builds": "rm -rf ios/build android/build android/app/build",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest --updateSnapshot --detectOpenHandles",
-    "test:watch": "jest --watch",
     "test:ci": "jest --coverage --verbose --runInBand",
-    "flow": "flow"
+    "test:watch": "jest --watch"
   },
   "dependencies": {
     "lodash": "4.17.10",
