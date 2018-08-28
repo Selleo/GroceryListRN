@@ -8,11 +8,14 @@ import { FlatList } from 'react-native-gesture-handler'
 import { Share, StyleSheet, View } from 'react-native'
 import { Button, FAB, Text, Dialog, TextInput } from 'react-native-paper'
 
+import { addItems } from '../../store/items/actions'
 import { gray, white } from '../../styles/colors'
 import SortableListItem from '../../components/SortableListItem'
 import ListItem from '../../components/ListItem'
+import randomId from '../../utils/randomId'
 
 type Props = {
+  addItems: Function,
   navigation: Object,
   items: Array<Object>,
 }
@@ -38,21 +41,21 @@ export class App extends Component<Props, State> {
 
   componentDidMount = () => this.setState({ items: this.props.items })
 
-  _items = () => encodeURI(JSON.stringify(this.state.items))
+  _items = () => this.props.items.map(({ name, id }) => `${name}:${id}`).join(';')
   _renderSortableItem = props => <SortableListItem {...props} />
   _handleStateChange = (key: string): Function => (name: string): void =>
     this.setState({ [key]: name })
 
   _addNewProduct = (): void => {
-    const { items, newItemsString } = this.state
     const newItems: Array<{ name: string, id: string }> = compact(
-      newItemsString.split(/[.,\n]/gi),
+      this.state.newItemsString.split(/[.,\n]/gi),
     ).map(name => ({
-      name,
-      id: (+new Date() * Math.random()).toString.slice(0, 5),
+      name: name.trim(),
+      id: randomId(),
     }))
 
-    this.setState({ items: items.concat(newItems), modalOpened: false })
+    this.props.addItems(newItems)
+    this.setState({ modalOpened: false })
   }
 
   _handleEdit = () => {
@@ -78,16 +81,16 @@ export class App extends Component<Props, State> {
   })
 
   render() {
+    const { items, navigation } = this.props
     const { fabOpened, editedItemId, modalOpened } = this.state
-    const { getParam } = this.props.navigation
+    const { getParam } = navigation
     const sortable: boolean = getParam('sortable')
-    const items = [...this.state.items, ...this.props.items]
 
     return (
       <View style={styles.container}>
         {sortable ? (
           <DraggableFlatList
-            data={this.state.items}
+            data={items}
             keyExtractor={({ id }) => id}
             onMoveEnd={({ data }) => this.setState({ items: data })}
             renderItem={this._renderSortableItem}
@@ -156,7 +159,10 @@ export class App extends Component<Props, State> {
 
 const mapStateToProps = ({ items }: Object): Object => ({ items })
 
-export default connect(mapStateToProps)(App)
+export default connect(
+  mapStateToProps,
+  { addItems },
+)(App)
 
 const shareOptions = {
   dialogTitle: 'Your list goes to...',
