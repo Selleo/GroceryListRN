@@ -23,7 +23,8 @@ type Props = {
 class AppContainer extends Component<Props> {
   _handleOpenURL = ({ url }) => {
     const [, queryString] = url.match(/items=([^#]+)/)
-    const items = JSON.parse(queryString)
+    const items = JSON.parse(decodeURI(queryString))
+
     this.props.setItems(items)
   }
 

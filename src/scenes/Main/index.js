@@ -30,13 +30,15 @@ export class App extends Component<Props, State> {
   state = {
     editedItemId: null,
     fabOpened: false,
-    items: this.props.items,
+    items: [],
     modalOpened: false,
     name: null,
     newItemsString: '',
   }
 
-  _items = () => JSON.stringify(this.state.items)
+  componentDidMount = () => this.setState({ items: this.props.items })
+
+  _items = () => encodeURI(JSON.stringify(this.state.items))
   _renderSortableItem = props => <SortableListItem {...props} />
   _handleStateChange = (key: string): Function => (name: string): void =>
     this.setState({ [key]: name })
@@ -47,7 +49,7 @@ export class App extends Component<Props, State> {
       newItemsString.split(/[.,\n]/gi),
     ).map(name => ({
       name,
-      id: (+new Date() * Math.random()).toString(),
+      id: (+new Date() * Math.random()).toString.slice(0, 5),
     }))
 
     this.setState({ items: items.concat(newItems), modalOpened: false })
@@ -71,14 +73,15 @@ export class App extends Component<Props, State> {
 
   _shareContent = (): Object => ({
     url: 'http://google.com',
-    message: `GroceryList://?items=${this._items()}`,
+    message: `GroceryList://items?items=${this._items()}`,
     title: 'Your best list',
   })
 
   render() {
-    const { items, fabOpened, editedItemId, modalOpened } = this.state
+    const { fabOpened, editedItemId, modalOpened } = this.state
     const { getParam } = this.props.navigation
     const sortable: boolean = getParam('sortable')
+    const items = [...this.state.items, ...this.props.items]
 
     return (
       <View style={styles.container}>
@@ -113,7 +116,7 @@ export class App extends Component<Props, State> {
             {
               icon: 'share',
               label: 'Share',
-              onPress: () => Share.share(this._shareContent, shareOptions),
+              onPress: () => Share.share(this._shareContent(), shareOptions),
             },
             {
               icon: 'add',

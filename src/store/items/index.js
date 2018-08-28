@@ -1,7 +1,7 @@
-export default (state = {}, { type, payload }) => {
+export default (state = [], { type, payload }) => {
   switch (type) {
     case 'SET_ITEMS':
-      return { ...state, ...payload }
+      return payload
 
     default:
       return state
