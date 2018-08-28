@@ -24,6 +24,7 @@
 .*/node_modules/react-navigation/.*
 .*/node_modules/react-native-paper/.*
 .*/node_modules/react-native-gesture-handler/.*
+.*/node_modules/react-native/Libraries/react-native/.*
 
 [include]
 
@@ -56,4 +57,4 @@ suppress_comment=\\(.\\|\n\\)*\\$FlowFixedInNextDeploy
 suppress_comment=\\(.\\|\n\\)*\\$FlowExpectedError
 
 [version]
-^0.78.0
+0.79.1

@@ -45,7 +45,7 @@ export class SortableListItem extends PureComponent<Props> {
     return (
       <Animated.View style={{ transform: [{ rotateZ: animationValue }] }}>
         <TouchableOpacity
-          onLongPress={move}
+          onPressIn={move}
           onPressOut={moveEnd}
           style={[styles.container, { backgroundColor: isActive ? gray : white }]}
         >

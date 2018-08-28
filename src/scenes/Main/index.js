@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import DraggableFlatList from 'react-native-draggable-flatlist'
-import uniqueId from 'lodash/uniqueId'
+import compact from 'lodash/compact'
 import { FlatList } from 'react-native-gesture-handler'
 import { Share, StyleSheet, View } from 'react-native'
 import { Button, FAB, Text, Dialog, TextInput } from 'react-native-paper'
@@ -21,7 +21,7 @@ type State = {
   items: Array<Object>,
   modalOpened: boolean,
   name: ?string,
-  newItem: ?string,
+  newItemsString: string,
 }
 
 export default class App extends Component<Props, State> {
@@ -31,7 +31,7 @@ export default class App extends Component<Props, State> {
     items: ITEMS,
     modalOpened: false,
     name: null,
-    newItem: null,
+    newItemsString: '',
   }
 
   _renderSortableItem = props => <SortableListItem {...props} />
@@ -39,9 +39,15 @@ export default class App extends Component<Props, State> {
     this.setState({ [key]: name })
 
   _addNewProduct = (): void => {
-    const { items, newItem } = this.state
-    const item = { name: newItem, id: uniqueId('item') }
-    this.setState({ items: [...items, item], modalOpened: false })
+    const { items, newItemsString } = this.state
+    const newItems: Array<{ name: string, id: string }> = compact(
+      newItemsString.split(/[.,\n]/gi),
+    ).map(name => ({
+      name,
+      id: (+new Date() * Math.random()).toString(),
+    }))
+
+    this.setState({ items: items.concat(newItems), modalOpened: false })
   }
 
   _handleEdit = () => {
@@ -117,8 +123,11 @@ export default class App extends Component<Props, State> {
           <Dialog.Title>Add new product</Dialog.Title>
           <Dialog.Content>
             <TextInput
-              onChangeText={this._handleStateChange('newItem')}
+              autoFocus={true}
+              onChangeText={this._handleStateChange('newItemsString')}
               onSubmitEditing={this._addNewProduct}
+              returnKeyLabel="Save"
+              returnKeyType="done"
             />
           </Dialog.Content>
 
@@ -140,8 +149,8 @@ const shareContent = {
 }
 
 const shareOptions = {
-  dialogTitle: 'Your list goes to',
-  subject: 'Your list goes to',
+  dialogTitle: 'Your list goes to...',
+  subject: 'Your list goes to...',
 }
 
 const styles = StyleSheet.create({

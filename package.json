@@ -30,7 +30,7 @@
     "babel-preset-react-native": "^5",
     "eslint": "5.3.0",
     "eslint-plugin-react-native": "3.2.1",
-    "flow-bin": "0.78.0",
+    "flow-bin": "0.79.1",
     "husky": "1.0.0-rc.13",
     "jest": "23.5.0",
     "lint-staged": "7.2.2",
@@ -50,13 +50,12 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "flow check && lint-staged"
     }
   },
   "lint-staged": {
     "*.js": [
       "eslint --fix",
-      "flow",
       "git add"
     ]
   }
