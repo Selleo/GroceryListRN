@@ -3,18 +3,20 @@
 import React, { Component } from 'react'
 import DraggableFlatList from 'react-native-draggable-flatlist'
 import compact from 'lodash/compact'
+import { connect } from 'react-redux'
 import { FlatList } from 'react-native-gesture-handler'
 import { Share, StyleSheet, View } from 'react-native'
 import { Button, FAB, Text, Dialog, TextInput } from 'react-native-paper'
 
-import ITEMS from '../../../fixtures/items'
 import { gray, white } from '../../styles/colors'
 import SortableListItem from '../../components/SortableListItem'
 import ListItem from '../../components/ListItem'
 
 type Props = {
   navigation: Object,
+  items: Array<Object>,
 }
+
 type State = {
   editedItemId: ?string,
   fabOpened: boolean,
@@ -24,16 +26,17 @@ type State = {
   newItemsString: string,
 }
 
-export default class App extends Component<Props, State> {
+export class App extends Component<Props, State> {
   state = {
     editedItemId: null,
     fabOpened: false,
-    items: ITEMS,
+    items: this.props.items,
     modalOpened: false,
     name: null,
     newItemsString: '',
   }
 
+  _items = () => JSON.stringify(this.state.items)
   _renderSortableItem = props => <SortableListItem {...props} />
   _handleStateChange = (key: string): Function => (name: string): void =>
     this.setState({ [key]: name })
@@ -65,6 +68,12 @@ export default class App extends Component<Props, State> {
     this.setState(prevState => ({
       items: prevState.items.filter(item => item.id !== id),
     }))
+
+  _shareContent = (): Object => ({
+    url: 'http://google.com',
+    message: `GroceryList://?items=${this._items()}`,
+    title: 'Your best list',
+  })
 
   render() {
     const { items, fabOpened, editedItemId, modalOpened } = this.state
@@ -104,7 +113,7 @@ export default class App extends Component<Props, State> {
             {
               icon: 'share',
               label: 'Share',
-              onPress: () => Share.share(shareContent, shareOptions),
+              onPress: () => Share.share(this._shareContent, shareOptions),
             },
             {
               icon: 'add',
@@ -142,11 +151,9 @@ export default class App extends Component<Props, State> {
   }
 }
 
-const shareContent = {
-  url: 'http://google.com',
-  message: 'Ultra grocery list',
-  title: 'Your best list',
-}
+const mapStateToProps = ({ items }: Object): Object => ({ items })
+
+export default connect(mapStateToProps)(App)
 
 const shareOptions = {
   dialogTitle: 'Your list goes to...',
