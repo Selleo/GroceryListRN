@@ -8,16 +8,17 @@ import { FlatList } from 'react-native-gesture-handler'
 import { Share, StyleSheet, View } from 'react-native'
 import { Button, FAB, Text, Dialog, TextInput } from 'react-native-paper'
 
-import { addItems } from '../../store/items/actions'
+import { addItems, removeItem } from '../../store/items/actions'
 import { gray, white } from '../../styles/colors'
 import SortableListItem from '../../components/SortableListItem'
 import ListItem from '../../components/ListItem'
-import randomId from '../../utils/randomId'
+import { randomId } from '../../utils'
 
 type Props = {
   addItems: Function,
-  navigation: Object,
   items: Array<Object>,
+  navigation: Object,
+  removeItem: Function,
 }
 
 type State = {
@@ -41,12 +42,12 @@ export class App extends Component<Props, State> {
 
   componentDidMount = () => this.setState({ items: this.props.items })
 
-  _items = () => this.props.items.map(({ name, id }) => `${name}:${id}`).join(';')
-  _renderSortableItem = props => <SortableListItem {...props} />
-  _handleStateChange = (key: string): Function => (name: string): void =>
+  items = () => this.props.items.map(({ name, id }) => `${name}:${id}`).join(';')
+  renderSortableItem = (props: Object) => <SortableListItem {...props} />
+  handleStateChange = (key: string): Function => (name: string): void =>
     this.setState({ [key]: name })
 
-  _addNewProduct = (): void => {
+  addNewProduct = (): void => {
     const newItems: Array<{ name: string, id: string }> = compact(
       this.state.newItemsString.split(/[.,\n]/gi),
     ).map(name => ({
@@ -58,7 +59,7 @@ export class App extends Component<Props, State> {
     this.setState({ modalOpened: false })
   }
 
-  _handleEdit = () => {
+  handleEdit = () => {
     const { editedItemId, name } = this.state
 
     this.setState(prevState => ({
@@ -69,14 +70,14 @@ export class App extends Component<Props, State> {
     }))
   }
 
-  _removeItem = (id: string): void =>
+  removeItem = (id: string): void =>
     this.setState(prevState => ({
       items: prevState.items.filter(item => item.id !== id),
     }))
 
-  _shareContent = (): Object => ({
+  shareContent = (): Object => ({
     url: 'http://google.com',
-    message: `GroceryList://items?items=${this._items()}`,
+    message: `GroceryList://items?items=${this.items()}`,
     title: 'Your best list',
   })
 
@@ -93,7 +94,7 @@ export class App extends Component<Props, State> {
             data={items}
             keyExtractor={({ id }) => id}
             onMoveEnd={({ data }) => this.setState({ items: data })}
-            renderItem={this._renderSortableItem}
+            renderItem={this.renderSortableItem}
             style={styles.container}
           />
         ) : (
@@ -104,50 +105,56 @@ export class App extends Component<Props, State> {
             renderItem={({ item }) => (
               <ListItem
                 editedItemId={editedItemId}
-                editItem={() => this._handleStateChange('editedItemId')(item.id)}
-                handleChange={this._handleStateChange('name')}
-                handleEdit={this._handleEdit}
+                editItem={() => this.handleStateChange('editedItemId')(item.id)}
+                handleChange={this.handleStateChange('name')}
+                handleEdit={this.handleEdit}
                 item={item}
-                removeItem={() => this._removeItem(item.id)}
+                removeItem={() => this.removeItem(item.id)}
               />
             )}
             style={styles.container}
           />
         )}
+
         <FAB.Group
           actions={[
             {
               icon: 'share',
               label: 'Share',
-              onPress: () => Share.share(this._shareContent(), shareOptions),
+              onPress: () =>
+                Share.share(this.shareContent(), {
+                  dialogTitle: 'Share your list with:',
+                  subject: 'Share your list with:',
+                }),
             },
             {
               icon: 'add',
               label: 'Add new product',
-              onPress: () => this._handleStateChange('modalOpened')(true),
+              onPress: () => this.handleStateChange('modalOpened')(true),
             },
           ]}
           icon={fabOpened ? 'today' : 'more'}
-          onStateChange={({ open }) => this._handleStateChange('fabOpened')(open)}
+          onStateChange={({ open }) => this.handleStateChange('fabOpened')(open)}
           open={fabOpened}
         />
+
         <Dialog
-          onDismiss={() => this._handleStateChange('modalOpened')(false)}
+          onDismiss={() => this.handleStateChange('modalOpened')(false)}
           visible={modalOpened}
         >
           <Dialog.Title>Add new product</Dialog.Title>
           <Dialog.Content>
             <TextInput
               autoFocus={true}
-              onChangeText={this._handleStateChange('newItemsString')}
-              onSubmitEditing={this._addNewProduct}
+              onChangeText={this.handleStateChange('newItemsString')}
+              onSubmitEditing={this.addNewProduct}
               returnKeyLabel="Save"
               returnKeyType="done"
             />
           </Dialog.Content>
 
           <Dialog.Actions>
-            <Button mode="contained" onPress={this._addNewProduct}>
+            <Button mode="contained" onPress={this.addNewProduct}>
               <Text style={styles.text}>Create</Text>
             </Button>
           </Dialog.Actions>
@@ -157,17 +164,19 @@ export class App extends Component<Props, State> {
   }
 }
 
-const mapStateToProps = ({ items }: Object): Object => ({ items })
+const mapStateToProps = ({ items }: Object): Object => ({
+  items,
+})
+
+const mapDispatchToProps = {
+  addItems,
+  removeItem,
+}
 
 export default connect(
   mapStateToProps,
-  { addItems },
+  mapDispatchToProps,
 )(App)
-
-const shareOptions = {
-  dialogTitle: 'Your list goes to...',
-  subject: 'Your list goes to...',
-}
 
 const styles = StyleSheet.create({
   container: {

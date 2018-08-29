@@ -1,32 +1,32 @@
-import * as React from 'react'
-import Icon from 'react-native-vector-icons/FontAwesome'
-import { createStackNavigator } from 'react-navigation'
+import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs'
 import { StyleSheet } from 'react-native'
 
-import Main from './scenes/Main'
-import { gray } from './styles/colors'
+import { sceneConfig } from './utils'
+import Home from './scenes/Home'
+import Profile from './scenes/Profile'
+import { gray, white } from './styles/colors'
 
 const Scenes = {
-  Main: {
-    screen: Main,
-    navigationOptions: ({ navigation: { setParams, getParam } }) => ({
-      headerRight: (
-        <Icon
-          color={gray}
-          name="sort"
-          onPress={() => setParams({ sortable: !getParam('sortable') })}
-          size={30}
-          style={styles.icon}
-        />
-      ),
-    }),
+  Home: {
+    screen: Home,
+    navigationOptions: sceneConfig('home'),
+  },
+  Profile: {
+    screen: Profile,
+    navigationOptions: sceneConfig('user'),
   },
 }
 
-export default createStackNavigator(Scenes)
-
-const styles = StyleSheet.create({
-  icon: {
-    padding: 10,
+const config = {
+  shifting: true,
+  initialRouteName: 'Home',
+  activeTintColor: '#0000ff',
+  inactiveTintColor: gray,
+  barStyle: {
+    borderColor: gray,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    backgroundColor: white,
   },
-})
+}
+
+export default createMaterialBottomTabNavigator(Scenes, config)

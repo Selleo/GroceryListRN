@@ -4,31 +4,42 @@ import type { Animation } from '../../types'
 import * as React from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Swipeable from 'react-native-gesture-handler/Swipeable'
-import { Animated, StyleSheet, View } from 'react-native'
+import { Animated, StyleSheet, View, Dimensions } from 'react-native'
 import { RectButton } from 'react-native-gesture-handler'
+import { connect } from 'react-redux'
 
 import RightButton from './RightButton'
 import { transparent, lightGreen, white, red, orange } from '../../styles/colors'
+import type { ReduxStore } from '../../store/index'
 
 const ITEM_WIDTH = 64
 
 type Props = {
   children: React.Node,
+  RTL: boolean,
   editItem: Function,
   removeItem: Function,
 }
 
-export default class SwipeableRow extends React.Component<Props> {
-  _swipeableRow: React.ElementRef<typeof SwipeableRow>
-  close = (): void => this._swipeableRow.close()
+const { width } = Dimensions.get('screen')
 
+export class SwipeableRow extends React.Component<Props> {
+  componentDidUpdate = (prevProps: Props) => {
+    if (prevProps.RTL !== this.props.RTL) {
+      this.swipeableRow.close()
+    }
+  }
+
+  swipeableRow: React.ElementRef<typeof SwipeableRow>
   // $FlowFixMe
-  updateRef = (ref): React.ElementRef<typeof SwipeableRow> => (this._swipeableRow = ref)
+  updateRef = (ref): React.ElementRef<typeof SwipeableRow> => (this.swipeableRow = ref)
+  close = (): void => this.swipeableRow.close()
 
-  _renderLeftActions = (progress: Animation, dragX: Animation): React.Node => {
+  doneSwipe = (progress: Animation, dragX: Animation): React.Node => {
+    const { RTL } = this.props
     const translateX: Animation = dragX.interpolate({
-      inputRange: [0, 50, 100, 101],
-      outputRange: [-20, 0, 0, 1],
+      inputRange: RTL ? [-width, -100, -50, 0] : [0, 50, 100, 101],
+      outputRange: RTL ? [20, width - 50, width - 50, width - 20] : [-20, 0, 0, 1],
     })
 
     return (
@@ -47,37 +58,47 @@ export default class SwipeableRow extends React.Component<Props> {
     )
   }
 
-  _handleRemoveItem = () => {
+  handleRemoveItem = () => {
     this.close()
     setTimeout(this.props.removeItem, 300)
   }
 
-  _handleEdit = () => {
+  handleEdit = () => {
     this.close()
     this.props.editItem()
   }
 
-  _renderRightActions = progress => (
-    <View style={styles.rightActionButtons}>
+  optionsSwipe = (progress: Object) => {
+    const { RTL } = this.props
+
+    const buttons = [
       <RightButton
         backgroundColor={orange}
         iconName="edit"
-        onPress={this._handleEdit}
+        key="edit"
+        onPress={this.handleEdit}
         positionX={ITEM_WIDTH * 2}
         progress={progress}
-      />
+        RTL={RTL}
+      />,
       <RightButton
         backgroundColor={red}
         iconName="trash"
-        onPress={this._handleRemoveItem}
+        key="delete"
+        onPress={this.handleRemoveItem}
         positionX={ITEM_WIDTH}
         progress={progress}
-      />
-    </View>
-  )
+        RTL={RTL}
+      />,
+    ]
+
+    return <View style={styles.rightActionButtons}>{RTL ? buttons.reverse() : buttons}</View>
+  }
 
   render(): React.Node {
-    const { children, removeItem } = this.props
+    const { children, removeItem, RTL } = this.props
+    const renderLeftActions = RTL ? this.optionsSwipe : this.doneSwipe
+    const renderRightActions = RTL ? this.doneSwipe : this.optionsSwipe
 
     return (
       <Swipeable
@@ -85,8 +106,8 @@ export default class SwipeableRow extends React.Component<Props> {
         leftThreshold={30}
         onSwipeableLeftOpen={removeItem}
         ref={this.updateRef}
-        renderLeftActions={this._renderLeftActions}
-        renderRightActions={this._renderRightActions}
+        renderLeftActions={renderLeftActions}
+        renderRightActions={renderRightActions}
         rightThreshold={40}
       >
         {children}
@@ -94,6 +115,12 @@ export default class SwipeableRow extends React.Component<Props> {
     )
   }
 }
+
+const mapStateToProps = ({ user }: ReduxStore): Object => ({
+  RTL: user.RTL,
+})
+
+export default connect(mapStateToProps)(SwipeableRow)
 
 const styles: Object = StyleSheet.create({
   leftAction: {

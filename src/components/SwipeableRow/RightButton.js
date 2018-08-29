@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { white } from '../../styles/colors'
 
 type Props = {
+  RTL: boolean,
   backgroundColor: string,
   iconName: string,
   onPress: Function,
@@ -15,11 +16,12 @@ type Props = {
 
 export default class RightButton extends React.PureComponent<Props> {
   render() {
-    const { progress, positionX, iconName, onPress, backgroundColor } = this.props
+    const { progress, positionX, iconName, onPress, backgroundColor, RTL } = this.props
+    const outputRange = RTL ? [-positionX, 0] : [positionX, 0]
 
     const trans = progress.interpolate({
       inputRange: [0, 1],
-      outputRange: [positionX, 0],
+      outputRange,
     })
 
     return (

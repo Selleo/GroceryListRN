@@ -8,3 +8,8 @@ const composeEnhancer = __DEV__ ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ||
 const store = createStore(reducers, composeEnhancer(applyMiddleware(thunkMiddleware)))
 
 export default store
+
+export type ReduxStore = {
+  items: Array,
+  user: Object<{ RTL: boolean }>,
+}

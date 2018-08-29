@@ -21,7 +21,21 @@ type Props = {
 }
 
 class AppContainer extends Component<Props> {
-  _handleOpenURL = ({ url }) => {
+  componentDidMount() {
+    Linking.addEventListener('url', this.handleOpenURL)
+
+    Linking.getInitialURL().then(url => {
+      if (url) {
+        this.handleOpenURL({ url })
+      }
+    })
+  }
+
+  componentWillUnmount() {
+    Linking.removeAllListeners()
+  }
+
+  handleOpenURL = ({ url }) => {
     const [, queryString] = url.match(/items=([^#]+)/)
     const items = queryString.split(';').map(i => {
       const [name, id] = i.split(':')
@@ -29,20 +43,6 @@ class AppContainer extends Component<Props> {
     })
 
     this.props.setItems(items)
-  }
-
-  componentDidMount() {
-    Linking.addEventListener('url', this._handleOpenURL)
-
-    Linking.getInitialURL().then(url => {
-      if (url) {
-        this._handleOpenURL({ url })
-      }
-    })
-  }
-
-  componentWillUnmount() {
-    Linking.removeAllListeners()
   }
 
   render() {
