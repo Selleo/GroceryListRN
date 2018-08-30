@@ -3,7 +3,7 @@ import { Animated, StyleSheet } from 'react-native'
 import { RectButton } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { white } from '../../styles/colors'
+import { white } from 'src/styles/colors'
 
 type Props = {
   RTL: boolean,

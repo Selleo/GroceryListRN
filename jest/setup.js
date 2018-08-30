@@ -1,3 +1,5 @@
+global.window = {}
+
 jest.mock('NativeModules', () => ({
   UIManager: {
     RCTView: () => {},

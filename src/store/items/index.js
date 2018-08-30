@@ -9,6 +9,9 @@ export default (state = [], { type, payload }) => {
     case 'REMOVE_ITEM':
       return state.reject(item => item.id === payload)
 
+    case 'UPDATE_ITEM':
+      return state.map(item => (item.id === payload.id ? payload : item))
+
     default:
       return state
   }

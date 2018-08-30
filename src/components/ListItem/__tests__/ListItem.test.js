@@ -1,8 +1,10 @@
 import 'react-native'
 import React from 'react'
 import renderer from 'react-test-renderer'
+import { Provider } from 'react-redux'
 
-import { ListItem } from '../'
+import store from 'src/store'
+import ListItem from '../'
 
 describe('<ListItem />', () => {
   const defaultProps = {
@@ -15,7 +17,11 @@ describe('<ListItem />', () => {
   }
 
   test('render', () => {
-    const wrapper = renderer.create(<ListItem {...defaultProps} />)
+    const wrapper = renderer.create(
+      <Provider store={store}>
+        <ListItem {...defaultProps} />
+      </Provider>,
+    )
 
     expect(wrapper).toMatchSnapshot()
   })
@@ -24,7 +30,9 @@ describe('<ListItem />', () => {
     // TODO: Check how to mock renders inside `react-native-paper`
 
     const wrapper = renderer.create(
-      <ListItem {...defaultProps} item={{ id: '1', name: 'toEdit' }} />,
+      <Provider store={store}>
+        <ListItem {...defaultProps} item={{ id: '1', name: 'toEdit' }} />
+      </Provider>,
     )
 
     expect(wrapper).toMatchSnapshot()

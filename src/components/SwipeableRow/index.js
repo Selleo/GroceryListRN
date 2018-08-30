@@ -1,5 +1,5 @@
 /* @flow */
-import type { Animation } from '../../types'
+import type { Animation } from 'src/types'
 
 import * as React from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome'
@@ -8,9 +8,9 @@ import { Animated, StyleSheet, View, Dimensions } from 'react-native'
 import { RectButton } from 'react-native-gesture-handler'
 import { connect } from 'react-redux'
 
+import { transparent, lightGreen, white, red, orange } from 'src/styles/colors'
+import type { ReduxStore } from 'src/store/index'
 import RightButton from './RightButton'
-import { transparent, lightGreen, white, red, orange } from '../../styles/colors'
-import type { ReduxStore } from '../../store/index'
 
 const ITEM_WIDTH = 64
 

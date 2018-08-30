@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { StyleSheet, View } from 'react-native'
 import { Switch } from 'react-native-paper'
 
-import { toggleRtl } from '../../store/user/actions'
+import { toggleRtl } from 'src/store/user/actions'
 
 type Props = {
   toggleRtl: Function,

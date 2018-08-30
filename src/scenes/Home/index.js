@@ -3,7 +3,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { createStackNavigator } from 'react-navigation'
 import { StyleSheet } from 'react-native'
 
-import { gray } from '../../styles/colors'
+import { gray } from 'src/styles/colors'
 import List from './List'
 
 export default createStackNavigator({

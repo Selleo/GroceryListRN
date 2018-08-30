@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import { Animated, TouchableOpacity, StyleSheet } from 'react-native'
 import { Text } from 'react-native-paper'
 
-import { gray, white, transparent } from '../../styles/colors'
+import { gray, white, transparent } from 'src/styles/colors'
 
 type Props = {
   move: Function,

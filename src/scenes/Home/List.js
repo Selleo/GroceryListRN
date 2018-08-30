@@ -8,17 +8,18 @@ import { FlatList } from 'react-native-gesture-handler'
 import { Share, StyleSheet, View } from 'react-native'
 import { Button, FAB, Text, Dialog, TextInput } from 'react-native-paper'
 
-import { addItems, removeItem } from '../../store/items/actions'
-import { gray, white } from '../../styles/colors'
-import SortableListItem from '../../components/SortableListItem'
-import ListItem from '../../components/ListItem'
-import { randomId } from '../../utils'
+import ListItem from 'src/components/ListItem'
+import SortableListItem from 'src/components/SortableListItem'
+import { addItems, removeItem, updateItem } from 'src/store/items/actions'
+import { gray, white } from 'src/styles/colors'
+import { randomId } from 'src/utils'
 
 type Props = {
   addItems: Function,
   items: Array<Object>,
   navigation: Object,
   removeItem: Function,
+  updateItem: Function,
 }
 
 type State = {
@@ -41,9 +42,10 @@ export class App extends Component<Props, State> {
   }
 
   componentDidMount = () => this.setState({ items: this.props.items })
-
   items = () => this.props.items.map(({ name, id }) => `${name}:${id}`).join(';')
+  removeItem = (id: string): void => this.props.removeItem(id)
   renderSortableItem = (props: Object) => <SortableListItem {...props} />
+
   handleStateChange = (key: string): Function => (name: string): void =>
     this.setState({ [key]: name })
 
@@ -60,24 +62,17 @@ export class App extends Component<Props, State> {
   }
 
   handleEdit = () => {
+    const { items, updateItem } = this.props
     const { editedItemId, name } = this.state
+    const oldItem = items.find(item => item.id === editedItemId)
 
-    this.setState(prevState => ({
-      items: prevState.items.map(
-        (item: Object) => (item.id === editedItemId ? { id: item.id, name } : item),
-      ),
-      editedItemId: null,
-    }))
+    updateItem({ ...oldItem, name })
+    this.setState({ editedItemId: null })
   }
-
-  removeItem = (id: string): void =>
-    this.setState(prevState => ({
-      items: prevState.items.filter(item => item.id !== id),
-    }))
 
   shareContent = (): Object => ({
     url: 'http://google.com',
-    message: `GroceryList://items?items=${this.items()}`,
+    message: `grocerylist://items?items=${this.items()}`,
     title: 'Your best list',
   })
 
@@ -104,7 +99,7 @@ export class App extends Component<Props, State> {
             keyExtractor={({ id }) => id}
             renderItem={({ item }) => (
               <ListItem
-                editedItemId={editedItemId}
+                editable={editedItemId === item.id}
                 editItem={() => this.handleStateChange('editedItemId')(item.id)}
                 handleChange={this.handleStateChange('name')}
                 handleEdit={this.handleEdit}
@@ -171,6 +166,7 @@ const mapStateToProps = ({ items }: Object): Object => ({
 const mapDispatchToProps = {
   addItems,
   removeItem,
+  updateItem,
 }
 
 export default connect(
